@@ -1,8 +1,9 @@
 {
   "name": "John Doe",
-  "email": "john.doe@example.com",
-  "phone": "+1234567890",
-  "message": "Thank you for your interest in our services. We will contact you soon!",
+  "email": "carendus@gmail.com,mabiclou@gmail.com",
+  "phone": "+919762903842",
+
+  "message": "message",
   "source": "contact_form",
   "timestamp": "2023-12-01T14:30:22Z",
   "additional_data": {

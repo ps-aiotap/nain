@@ -107,7 +107,7 @@ async def process_workflow(request_id, data):
     except Exception as e:
         logger.error(f"[{request_id}] Failed to log to Google Sheets: {str(e)}", extra={"request_id": request_id})
     
-    # Step 2: Send WhatsApp message with fallbacks
+    # Step 2: Send WhatsApp message
     phone = data.get('phone') or data.get('mobile') or data.get('whatsapp')
     message = data.get('message', 'Thank you for your submission!')
     
@@ -119,17 +119,18 @@ async def process_workflow(request_id, data):
         except Exception as e:
             logger.error(f"[{request_id}] All messaging services failed: {str(e)}", extra={"request_id": request_id})
             workflow_status["fallback_executed"] = True
-            
-            # Fallback to email
-            email = data.get('email')
-            if email:
-                try:
-                    await email_service.send_notification(email, "Message Delivery Failed", 
-                                                  f"Could not deliver WhatsApp message: {message}")
-                    workflow_status["email_sent"] = True
-                    logger.info(f"[{request_id}] Fallback email sent", extra={"request_id": request_id})
-                except Exception as email_error:
-                    logger.error(f"[{request_id}] Email fallback failed: {str(email_error)}", extra={"request_id": request_id})
+    
+    # Step 3: Always send email notification
+    email = data.get('email')
+    if email:
+        try:
+            subject = "Form Submission Received" if workflow_status["message_sent"] else "Message Delivery Failed"
+            body = f"Thank you for your submission: {message}" if workflow_status["message_sent"] else f"Could not deliver WhatsApp message: {message}"
+            await email_service.send_notification(email, subject, body)
+            workflow_status["email_sent"] = True
+            logger.info(f"[{request_id}] Email notification sent", extra={"request_id": request_id})
+        except Exception as email_error:
+            logger.error(f"[{request_id}] Email notification failed: {str(email_error)}", extra={"request_id": request_id})
     
     # Log final status
     logger.info(f"[{request_id}] Workflow completed", extra={"request_id": request_id, "status": workflow_status})

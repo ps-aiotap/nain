@@ -1,4 +1,4 @@
-version: '3'
+# version: '3'
 
 services:
   n8n:
@@ -30,7 +30,7 @@ services:
     ports:
       - "8080:8080"
     env_file:
-      - ./automation-service/.env
+      - ./automation-service/.env.local
     volumes:
       - ./automation-service/credentials.json:/app/credentials.json:ro
       - automation_logs:/app/logs

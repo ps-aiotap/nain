@@ -19,6 +19,7 @@ A production-grade Python microservice for external automation workflows that in
 ## Quick Start
 
 1. **Clone and setup**:
+
 ```bash
 cd automation-service
 cp .env.example .env
@@ -26,19 +27,21 @@ cp .env.example .env
 ```
 
 2. **Start with Docker Compose**:
+
 ```bash
 cd ..
 docker-compose up -d
 ```
 
 3. **Test the service**:
+
 ```bash
 curl -X POST http://localhost:8080/webhook \
   -H "Content-Type: application/json" \
   -d '{
     "name": "John Doe",
-    "email": "john@example.com",
-    "phone": "+1234567890",
+    "email": "carendus@gmail.com",
+    "phone": "+919762903842",
     "message": "Hello from automation service!"
   }'
 ```
@@ -46,9 +49,11 @@ curl -X POST http://localhost:8080/webhook \
 ## API Endpoints
 
 ### POST /webhook
+
 Processes incoming webhook data and executes the automation workflow.
 
 **Request Body**:
+
 ```json
 {
   "name": "John Doe",
@@ -59,6 +64,7 @@ Processes incoming webhook data and executes the automation workflow.
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -73,6 +79,7 @@ Processes incoming webhook data and executes the automation workflow.
 ```
 
 ### GET /health
+
 Health check endpoint for monitoring.
 
 ## Configuration
@@ -126,18 +133,21 @@ LOG_FILE=automation.log
 ### 2. Messaging Services Setup
 
 #### Gupshup (Recommended)
+
 1. Sign up at [Gupshup](https://www.gupshup.io/)
 2. Create WhatsApp Business API app
 3. Get API key and app name
 4. Configure webhook URL (optional)
 
 #### Twilio (Fallback)
+
 1. Sign up at [Twilio](https://www.twilio.com/)
 2. Get Account SID and Auth Token
 3. Enable WhatsApp sandbox or get approved number
 4. Set WhatsApp-enabled phone number
 
 #### Interakt (Fallback)
+
 1. Sign up at [Interakt](https://www.interakt.ai/)
 2. Get API key from dashboard
 3. Configure WhatsApp templates
@@ -145,11 +155,13 @@ LOG_FILE=automation.log
 ### 3. Email Services Setup
 
 #### SendGrid (Recommended)
+
 1. Sign up at [SendGrid](https://sendgrid.com/)
 2. Create API key with Mail Send permissions
 3. Verify sender email address
 
 #### SMTP (Fallback)
+
 1. Use Gmail App Password or other SMTP provider
 2. Enable 2FA and generate app-specific password
 3. Configure SMTP settings
@@ -163,6 +175,7 @@ LOG_FILE=automation.log
 5. **Body**: Map your form data to the expected format
 
 Example n8n workflow:
+
 ```
 Form Trigger → Set Node (format data) → HTTP Request (automation-service) → End
 ```
@@ -170,6 +183,7 @@ Form Trigger → Set Node (format data) → HTTP Request (automation-service) �
 ## Development
 
 ### Local Development
+
 ```bash
 # Install dependencies
 pip install -r requirements.txt
@@ -182,6 +196,7 @@ python -m pytest tests/
 ```
 
 ### Docker Development
+
 ```bash
 # Build image
 docker build -t automation-service .
@@ -193,6 +208,7 @@ docker run -p 8080:8080 --env-file .env automation-service
 ## Monitoring and Logging
 
 The service provides structured JSON logging with the following fields:
+
 - `timestamp`: ISO format timestamp
 - `level`: Log level (INFO, ERROR, WARNING)
 - `request_id`: Unique identifier for each request
@@ -204,6 +220,7 @@ Logs are output to both console (for Docker) and file (configurable).
 ## Production Deployment
 
 ### Security Considerations
+
 - Use strong API keys and rotate regularly
 - Implement rate limiting (via reverse proxy)
 - Use HTTPS in production
@@ -211,6 +228,7 @@ Logs are output to both console (for Docker) and file (configurable).
 - Monitor logs for suspicious activity
 
 ### Scaling
+
 - Service is stateless and can be horizontally scaled
 - Use load balancer for multiple instances
 - Consider using external logging service (ELK stack)
@@ -221,10 +239,12 @@ Logs are output to both console (for Docker) and file (configurable).
 ### Common Issues
 
 1. **Google Sheets Permission Denied**
+
    - Ensure service account email has edit access to the sheet
    - Verify credentials.json file is properly mounted
 
 2. **Messaging Service Failures**
+
    - Check API credentials and quotas
    - Verify phone number format (+country_code)
    - Review service-specific documentation
@@ -235,6 +255,7 @@ Logs are output to both console (for Docker) and file (configurable).
    - Review SMTP/SendGrid logs
 
 ### Debug Mode
+
 Set `LOG_LEVEL=DEBUG` in environment variables for detailed logging.
 
 ## License
@@ -244,6 +265,7 @@ MIT License - see LICENSE file for details.
 ## Support
 
 For issues and questions:
+
 1. Check the troubleshooting section
 2. Review service logs
 3. Consult API provider documentation
