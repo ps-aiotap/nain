@@ -34,3 +34,4 @@ Thumbs.db
 *.tmp
 *.temp
 credentials.jsonautomation-service/credentials.json
+automation-service/credentials.json
