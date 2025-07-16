@@ -1,0 +1,13 @@
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "phone": "+1234567890",
+  "message": "Thank you for your interest in our services. We will contact you soon!",
+  "source": "contact_form",
+  "timestamp": "2023-12-01T14:30:22Z",
+  "additional_data": {
+    "company": "Example Corp",
+    "interest": "Product Demo",
+    "budget": "10k-50k"
+  }
+}

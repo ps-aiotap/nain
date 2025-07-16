@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=securepassword123
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=production
+      - WEBHOOK_URL=http://${N8N_HOST:-localhost}:5678/
+      - GENERIC_TIMEZONE=Asia/Kolkata
+      - N8N_LOG_LEVEL=debug
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - n8n-network
+    depends_on:
+      - automation-service
+
+  automation-service:
+    build: ./automation-service
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./automation-service/.env
+    volumes:
+      - ./automation-service/credentials.json:/app/credentials.json:ro
+      - automation_logs:/app/logs
+    networks:
+      - n8n-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  n8n_data:
+    driver: local
+  automation_logs:
+    driver: local
+
+networks:
+  n8n-network:
+    driver: bridge
